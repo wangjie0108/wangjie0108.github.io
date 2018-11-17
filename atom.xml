@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-11-17T11:22:49.602Z</updated>
+  <updated>2018-11-14T16:59:40.782Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,28 +15,6 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>随便</title>
-    <link href="http://yoursite.com/2018/11/17/%E9%9A%8F%E4%BE%BF/"/>
-    <id>http://yoursite.com/2018/11/17/随便/</id>
-    <published>2018-11-17T11:22:40.000Z</published>
-    <updated>2018-11-17T11:22:49.602Z</updated>
-    
-    <content type="html"><![CDATA[<p>我就试一试</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;我就试一试&lt;/p&gt;
-
-      
-    
-    </summary>
-    
-    
-  </entry>
   
   <entry>
     <title>vue全家桶</title>
@@ -573,6 +551,34 @@
     
       <category term="一锅炖总结" scheme="http://yoursite.com/categories/%E5%89%8D%E7%AB%AF/%E4%B8%80%E9%94%85%E7%82%96%E6%80%BB%E7%BB%93/"/>
     
+    
+  </entry>
+  
+  <entry>
+    <title>跨域几种方式</title>
+    <link href="http://yoursite.com/2018/06/13/%E8%B7%A8%E5%9F%9F%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/"/>
+    <id>http://yoursite.com/2018/06/13/跨域几种方式/</id>
+    <published>2018-06-13T12:18:25.000Z</published>
+    <updated>2018-11-12T01:45:47.742Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="什么是跨域"><a href="#什么是跨域" class="headerlink" title="什么是跨域"></a>什么是跨域</h2><ol><li>一个域名组成： 协议<code>(http://)</code> 子域名 <code>(www)</code>  .  主域名<code>(xyz.com)</code> : 端口号<code>(8080)</code> / 请求资源地址<code>(scripts/jquery.js)</code></li><li>javascript 处于安全考虑，不允许跨域调用其他页面的对象。</li><li>简单的讲，因为JavaScript同源策略的限制，<code>a.com</code>域名下的js无法操作<code>b.com</code>或是<code>c.a.com</code>域名下的对象。即：当协议、子域名，主域名、端口号中任意一个不相同时，都是不同域。不同域之间相互请求资源，就是’跨域’。</li><li>但是需要注意：<strong>跨域并不是请求发不出去，请求能发出去，服务端能收到请求并正常返回结果，只是结果被浏览器拦截了</strong></li><li>跨域是由于收到了同源策略的限制，同源策略要求协议、域名、端口号完全一致才能正常通信。</li></ol><h2 id="特别注意："><a href="#特别注意：" class="headerlink" title="特别注意："></a>特别注意：</h2><p>第一、 如果协议和端口造成的跨域问题，‘前台’无能为力。<br>第二、 在跨域问题上，域仅仅是通过‘协议、域名、端口必须匹配’ 来识别而不会根据域名对应的IP地址是否相同来判断</p><h2 id="什么是同源策略"><a href="#什么是同源策略" class="headerlink" title="什么是同源策略"></a>什么是同源策略</h2><p>同源策略限制一个源加载的文档或者脚本如何与来自另一个源的资源进行交互。用于隔离潜在恶意文件的关键的安全机制。它的存在可以保护用户隐私信息，防止身份伪造等（读取cookie）</p><h2 id="同源策略限制的内容："><a href="#同源策略限制的内容：" class="headerlink" title="同源策略限制的内容："></a>同源策略限制的内容：</h2><ul><li><code>cookie</code>、<code>LocalStorage</code>、<code>IndexedDB</code>等储存性内容</li><li>DOM节点</li><li><code>ajax</code>请求不能发送</li></ul><h2 id="有三个标签是允许跨域加载资源的："><a href="#有三个标签是允许跨域加载资源的：" class="headerlink" title="有三个标签是允许跨域加载资源的："></a>有三个标签是允许跨域加载资源的：</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- &lt;img src="" alt=""&gt;</span><br><span class="line">- &lt;script src=""&gt;&lt;/script&gt;</span><br><span class="line">- &lt;link rel="stylesheet" href=""&gt;</span><br></pre></td></tr></table></figure><h2 id="处理跨域方法"><a href="#处理跨域方法" class="headerlink" title="处理跨域方法"></a>处理跨域方法</h2><ol><li><code>JSONP</code></li></ol><ul><li>原理：利用<code>&lt;script&gt;</code>元素的这个开放策略，网页可以得到从其他来源动态产生的<code>json</code>数据。<code>json</code>请求需要对方的服务器做支持才可以；</li><li><code>JSONP</code> 发送的不是 <code>Ajax</code> 请求</li><li>缺点：不支持 <code>Post</code> 请求，仅支持<code>get</code>方法具有局限性；</li><li>优点： 兼容性好，可用于解决主流浏览器的跨域数据访问的问题。</li></ul><ol start="2"><li>CORS</li></ol><ul><li>原理：如果要启用 CORS 跨域资源共享，关键在于服务器端，只要服务器支持CORS跨域资源共享，则浏览器肯定能够正常访问 这种 CORS 接口；而且，客户端在发送 Ajax的时候，就像发送普通AJax一样，没有任何代码上的变化</li><li>发送的是ajax请求</li><li>支持ajax跨域</li><li>优点：功能更强大支持各种<code>HTTP Method</code></li><li>缺点：CORS要求浏览器（IE&gt;10）和服务器同时支持，是跨域的根本解决方法，由浏览器自动完成，由此，兼容性不如 JSONP</li><li><code>header(&quot; Access-Control-Allow-Origin:* &quot;);</code></li><li><code>header(&quot; Access-Control-Allow-Methods:post,get &quot;);</code></li></ul><ol start="3"><li>node搭建服务器（– 大胆的想法 –）</li></ol><ul><li>跨域只存在于浏览器之间，服务器之间不存在跨域之说，用node搭建本地服务器，ajax请求本地服务器，通过本地服务器去请求外部的接口</li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;什么是跨域&quot;&gt;&lt;a href=&quot;#什么是跨域&quot; class=&quot;headerlink&quot; title=&quot;什么是跨域&quot;&gt;&lt;/a&gt;什么是跨域&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;一个域名组成： 协议&lt;code&gt;(http://)&lt;/code&gt; 子域名 &lt;code&gt;(www)&lt;/co
+      
+    
+    </summary>
+    
+      <category term="前端" scheme="http://yoursite.com/categories/%E5%89%8D%E7%AB%AF/"/>
+    
+      <category term="跨域" scheme="http://yoursite.com/categories/%E5%89%8D%E7%AB%AF/%E8%B7%A8%E5%9F%9F/"/>
+    
+    
+      <category term="跨域" scheme="http://yoursite.com/tags/%E8%B7%A8%E5%9F%9F/"/>
     
   </entry>
   
