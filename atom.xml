@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-11-14T16:59:40.782Z</updated>
+  <updated>2018-11-17T11:25:03.672Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -18,10 +18,10 @@
   
   <entry>
     <title>vue全家桶</title>
-    <link href="http://yoursite.com/2018/11/14/vue%E5%85%A8%E5%AE%B6%E6%A1%B6/"/>
-    <id>http://yoursite.com/2018/11/14/vue全家桶/</id>
-    <published>2018-11-14T15:03:40.000Z</published>
-    <updated>2018-11-14T16:59:40.782Z</updated>
+    <link href="http://yoursite.com/2018/11/10/vue%E5%85%A8%E5%AE%B6%E6%A1%B6/"/>
+    <id>http://yoursite.com/2018/11/10/vue全家桶/</id>
+    <published>2018-11-10T15:03:40.000Z</published>
+    <updated>2018-11-17T11:25:03.672Z</updated>
     
     <content type="html"><![CDATA[<h1 id="vue全家桶"><a href="#vue全家桶" class="headerlink" title="vue全家桶"></a>vue全家桶</h1><h1 id="vue-router"><a href="#vue-router" class="headerlink" title="vue-router"></a>vue-router</h1><ul><li>vue的路由</li><li>安装： <code>npm i vue-router</code></li><li>引用方式： <ul><li>标签引用</li><li>模块化引用<ul><li>Vue.use(router)</li><li>在根组件注册路由</li><li>render： <ul><li>组件的渲染方式；</li><li>缺点：会替换div#app</li></ul></li></ul></li></ul></li></ul><h1 id="vue-resource"><a href="#vue-resource" class="headerlink" title="vue-resource"></a>vue-resource</h1><ul><li>作用：<code>vue</code>中发送<code>http</code>的，但是官方已经不再维护了，建议使用<code>axios</code></li><li>安装： <code>npm i vue-resource</code></li><li>如何获取服务器返回的数据： <ul><li><code>then(function(res){ res.body.message })</code></li></ul></li></ul><h1 id="axios"><a href="#axios" class="headerlink" title="axios"></a>axios</h1><ul><li>作用： 发送<code>http</code>请求的工具（官方建议使用的）</li><li>注意: <code>axios`</code>then<code>中</code>this<code>指向不是当前的</code>vue`组件对象，所以建议使用箭头函数</li></ul><h1 id="Vue-cli"><a href="#Vue-cli" class="headerlink" title="Vue-cli"></a>Vue-cli</h1><ul><li>作用：<code>vue</code>项目的搭建工具<ul><li>可以帮助我们快速的生成一个基于<code>webpack</code>构建的模块化的<code>vue</code>项目，里面整合了常见的一些工具，比如<code>babel</code>和一些文件的<code>loader</code>还有<code>vue</code>的全家桶</li></ul></li><li>全局安装： <code>npm i vue-cli -g</code></li><li>定位到项目目录: <code>vue init webpack &quot;项目名称&quot;</code> </li></ul><h1 id="vueX"><a href="#vueX" class="headerlink" title="vueX"></a>vueX</h1><p>vue项目的状态管理（可以理解为vue的共享数据库）</p><ul><li>作用：存储一些共享的数据，所有的组件都可以访问vuex中的共享数据，解决了组件之间传值的问题</li><li>引入：<code>Vue.use(Vuex)</code></li><li><code>var store = new Vuex.store({ })</code></li><li><code>vuex</code>的四个核心：<ul><li><code>state</code>状态（数据）：可以理解为组件对象中的<code>data</code><ul><li><code>state</code>中数据如何变化？ <code>this.$store.state.**</code></li><li>可以通过<code>store.state</code>获取状态对象，<code>store.commit</code>触发状态变更</li></ul></li><li><code>getter</code>：对外提供数据，与组件中的过滤器比较像；可以认为是store的计算属性（和computed比较像），只有当它的依赖值发生了变化，才会重新计算；</li><li><code>mutation</code>变化：可以理解为组件对象中的<code>methods</code><ul><li>注意：<code>mutations</code>中不支持异步的操作</li><li>里面的方法专门用来操作<code>state</code>中的数据</li><li>更改<code>store</code>中的状态的唯一的方法，当<code>store</code>发生变化，需要提交的时候，会用到<code>mutations</code></li><li>在组件中通过<code>this.$store.commit(&#39;函数名&#39;)</code>调用mutations中的方法</li></ul></li><li><code>action</code>: 类似于mutations，但不完全相同<ul><li><code>action</code>提交的是<code>mutation</code>，而不是直接变更状态；</li><li><code>action</code>可以包含任意异步操作</li></ul></li><li><code>module</code></li></ul></li><li>注意点：不要再组件中直接修改vuex中state，而是要使用commit调用mutations中的函数。去修改state的值，<ul><li>好处： 避免数据紊乱，更好的追踪每个状态的变化</li></ul></li><li>什么时候对组件进行拆分？<ul><li>高复用，分治的情况下对组件进行拆分</li><li>拆分组件有时是为了代码的简洁性和可阅读性</li></ul></li><li>什么时候使用路由？<ul><li>适用于构建单页面应用。vue的单页面应用基于路由和组件的，路由由于设定访问路径，并将路径和组件映射起来；</li><li>传统的单页面应用是用一些超链接实现页面切换和跳转的；</li><li>在<code>vue-router</code>单页面应用中，则是路径之间的切换，也就是组件之间的切换</li></ul></li></ul><ul><li>vue的一些插件：<ul><li>vue-resource</li><li>http-server</li><li>v-tap</li><li>min-ui</li><li>vue-clipboard2<ul><li>网页端、H5操作剪切板</li></ul></li></ul></li></ul><h1 id="data、props、vueX的区别？"><a href="#data、props、vueX的区别？" class="headerlink" title="data、props、vueX的区别？"></a>data、props、vueX的区别？</h1><ul><li>vueX相当于数据库，保存vue状态–就是保存vue的数据</li><li>vueX是一个全局的共享数据存储区域，只有共享的数据才能放到vueX中；</li><li>data：组件内部私有的数据才可以放到组件的data中去，数据是可读可写的；</li><li>props：父子组件之间传递的数据才可以放到props中，且数据是只读的；</li></ul>]]></content>
     
