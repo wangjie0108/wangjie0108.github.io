@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.5.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.5.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.5.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.5.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="1. Javascript 的单线程和异步 Javascript 的解析和执行一直是单线程的，但是宿主环境（浏览器或node）是多线程的；   异步任务是由宿主环境开启子线程完成，并通过事件驱动、回调函数、队列，把完成的任务, 交给主线程执行;   Javascript解析引擎，一直在做一个工作，就是从任务队列里提取任务，放到主线程里执行。  2. Node中的API为什么几乎都是异步操作 什么样">
+<meta name="keywords" content="node">
+<meta property="og:type" content="article">
+<meta property="og:title" content="node基础">
+<meta property="og:url" content="http://yoursite.com/2018/09/15/node基础/index.html">
+<meta property="og:site_name" content="个人小站">
+<meta property="og:description" content="1. Javascript 的单线程和异步 Javascript 的解析和执行一直是单线程的，但是宿主环境（浏览器或node）是多线程的；   异步任务是由宿主环境开启子线程完成，并通过事件驱动、回调函数、队列，把完成的任务, 交给主线程执行;   Javascript解析引擎，一直在做一个工作，就是从任务队列里提取任务，放到主线程里执行。  2. Node中的API为什么几乎都是异步操作 什么样">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-11-09T08:52:48.882Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="node基础">
+<meta name="twitter:description" content="1. Javascript 的单线程和异步 Javascript 的解析和执行一直是单线程的，但是宿主环境（浏览器或node）是多线程的；   异步任务是由宿主环境开启子线程完成，并通过事件驱动、回调函数、队列，把完成的任务, 交给主线程执行;   Javascript解析引擎，一直在做一个工作，就是从任务队列里提取任务，放到主线程里执行。  2. Node中的API为什么几乎都是异步操作 什么样">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/09/15/node基础/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>node基础 | 个人小站</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://your-url" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">个人小站</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">世间所有的相遇,都是久别重逢</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/15/node基础/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="萌萌">
+      <meta itemprop="description" content="吃饭、睡觉、打豆豆">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人小站">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">node基础
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-09-15 19:17:47" itemprop="dateCreated datePublished" datetime="2018-09-15T19:17:47+08:00">2018-09-15</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/前端/" itemprop="url" rel="index"><span itemprop="name">前端</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/前端/node/" itemprop="url" rel="index"><span itemprop="name">node</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="1-Javascript-的单线程和异步"><a href="#1-Javascript-的单线程和异步" class="headerlink" title="1. Javascript 的单线程和异步"></a>1. Javascript 的单线程和异步</h2><blockquote>
+<p>Javascript 的解析和执行一直是单线程的，但是<strong>宿主环境（浏览器或node）</strong>是多线程的；</p>
+</blockquote>
+<blockquote>
+<p>异步任务是由宿主环境开启子线程完成，并通过<strong>事件驱动、回调函数、队列</strong>，把完成的任务, 交给主线程执行;</p>
+</blockquote>
+<blockquote>
+<p>Javascript解析引擎，一直在做一个工作，就是<strong>从任务队列里提取任务，放到主线程里执行</strong>。</p>
+</blockquote>
+<h2 id="2-Node中的API为什么几乎都是异步操作"><a href="#2-Node中的API为什么几乎都是异步操作" class="headerlink" title="2. Node中的API为什么几乎都是异步操作"></a>2. Node中的API为什么几乎都是异步操作</h2><ol>
+<li>什么样的操作需要使用异步处理：要把 耗时的操作，放到异步中去执行；</li>
+<li>异步执行任务的好处：能够提高 耗时的任务它的执行效率，提高 JS 解析引擎的工作效率；</li>
+</ol>
+<h2 id="3-模块化"><a href="#3-模块化" class="headerlink" title="3. 模块化"></a>3. 模块化</h2><blockquote>
+<p>模块化就是一种约定，一定规范；</p>
+<p>场景模拟：小强，小黄，小刚 共同基于 Node.js 开发项目！</p>
+</blockquote>
+<ol>
+<li>为什么要有模块化：<strong>为了解决文件之间的依赖关系</strong>；</li>
+<li>注意：<strong>模块化是一种开发思想</strong>；具体开发中需要定制符合实际需求的<strong>模块化规范</strong>！</li>
+<li>大家可以把模块化规范，认为是一种<strong>明文的约定</strong>，大家都按照相同的约定写代码，减少了不必要的沟通成本，极大方便了各个模块之间的调用，方便别人，同时也方便自己；</li>
+</ol>
+<h2 id="4-CommonJS-规范"><a href="#4-CommonJS-规范" class="headerlink" title="4. CommonJS 规范"></a>4. CommonJS 规范</h2><ol>
+<li>作用：是一套 Javascript 的模块化规范，规定了 <strong>模块的特性</strong> 和 <strong>各模块之间如何相互依赖</strong>；</li>
+<li>用途：Node.js 中使用了 CommonJS 规范；</li>
+<li>特点：同步加载模块；不适合在浏览器端使用；</li>
+<li>CommonJS规范都定义了哪些内容：<a href="http://wiki.commonjs.org/wiki/Modules/1.1" target="_blank" rel="noopener">wiki 对于 Modules 的描述</a></li>
+</ol>
+<h2 id="5-模块作用域-和-全局作用域"><a href="#5-模块作用域-和-全局作用域" class="headerlink" title="5. 模块作用域 和 全局作用域"></a>5. 模块作用域 和 全局作用域</h2><blockquote>
+<p>在Node.js中有两个作用域，分别是 全局作用域 和 模块作用域；</p>
+</blockquote>
+<ol>
+<li>全局作用域使用 <code>global</code> 来访问，类似于<code>浏览器中的window</code>；</li>
+<li>每个 Javascript 文件，都是一个单独模块，每个模块都有自己独立的作用域，因此：模块中的成员，默认无法被其它模块访问。</li>
+</ol>
+<h3 id="5-1-使用-global-全局作用域在模块之间共享成员"><a href="#5-1-使用-global-全局作用域在模块之间共享成员" class="headerlink" title="5.1 使用 global 全局作用域在模块之间共享成员"></a>5.1 使用 global 全局作用域在模块之间共享成员</h3><ol>
+<li>如果在某个模块内部，想为 全局的 global 作用域挂载一些属性，需要显示的调用<code>global.***</code>来挂载；</li>
+<li>注意：在开发中，一般情况下，不推荐使用<code>global</code>全局作用域来共享成员，会存在全局变量污染问题；</li>
+</ol>
+<h3 id="5-2-模块作用域"><a href="#5-2-模块作用域" class="headerlink" title="5.2 模块作用域"></a>5.2 模块作用域</h3><ol>
+<li><p><strong>module（模块标识）</strong></p>
+<p>module 属性是 Common JS 规范中定义的，它是一个对象，表示当前这个具体的 js 模块；</p>
+</li>
+<li><p><strong>require（引用模块）</strong></p>
+<p>每一个实现了 CommonJS 规范的模块，必须定义一个 require() 函数，使用这个 require 函数，就能够 很方便的导入其它 模块中的成员，供自己使用；</p>
+</li>
+<li><p><strong>exports（暴露模块成员）</strong></p>
+<p>每一个模块中，如果想要把自己的一些私有成员，暴露给别人使用，那么，必须实现一个 exports 对象，通过exports对象，可以方便的把模块内私有的成员，暴露给外界使用；</p>
+</li>
+</ol>
+<h3 id="5-3-module-exports-和-exports-的关系"><a href="#5-3-module-exports-和-exports-的关系" class="headerlink" title="5.3 module.exports 和 exports 的关系"></a>5.3 module.exports 和 exports 的关系</h3><ol>
+<li><code>module.exports</code> 和 <code>exports</code> 默认引用了同一个空对象；</li>
+<li><code>module.exports</code> 和 <code>exports</code> 作用一致，都可以向外暴露成员；</li>
+<li>一个模块作用域中，向外暴露私有成员时，永远以 <code>module.exports</code> 为准；</li>
+</ol>
+<h2 id="6-浏览器端的-AMD-和-CMD-模块化规范"><a href="#6-浏览器端的-AMD-和-CMD-模块化规范" class="headerlink" title="6.浏览器端的 AMD 和 CMD 模块化规范"></a>6.浏览器端的 AMD 和 CMD 模块化规范</h2><blockquote>
+<p>注意：浏览器端不能使用 CommonJS规范；因为 CommonJS 下，模块是同步加载的；</p>
+</blockquote>
+<blockquote>
+<p>AMD/CMD可以理解为是commonjs在浏览器端的解决方案，AMD/CMD下，模块都是异步加载的；</p>
+</blockquote>
+<ol>
+<li>AMD模块化规范代表：RequireJS<ul>
+<li>主要特性1：对于依赖的模块，AMD 是提前执行；</li>
+<li>主要特性2：推崇依赖前置；</li>
+</ul>
+</li>
+<li>CMD模块化规范代表：SeaJS<ul>
+<li>主要特性1：对于依赖的模块，CMD 是延迟执行；CMD 推崇 as lazy as possible.</li>
+<li>主要特性2：推崇依赖就近；</li>
+</ul>
+</li>
+<li>ES6的模块化（<strong>大趋势</strong>）：es6是在<strong>语言标准层面上</strong>，实现了模块功能，而且实现得相当简单，<strong>完全可以取代 CommonJS 和 AMD 规范，成为浏览器和服务器通用的模块解决方案</strong>；</li>
+</ol>
+<h2 id="7-Node-js-中-模块-和-包-的概念"><a href="#7-Node-js-中-模块-和-包-的概念" class="headerlink" title="7. Node.js 中 模块 和 包 的概念"></a>7. Node.js 中 <code>模块</code> 和 <code>包</code> 的概念</h2><blockquote>
+<p>回顾：Node.js 由三部分组成：ECMAScript 核心 + 全局成员 + 模块成员</p>
+</blockquote>
+<h3 id="7-1-模块成员的分类"><a href="#7-1-模块成员的分类" class="headerlink" title="7.1 模块成员的分类"></a>7.1 模块成员的分类</h3><blockquote>
+<p>模块成员，根据一些区别，又可以分为三大类： 核心模块、第三方模块、用户自定义模块</p>
+</blockquote>
+<h4 id="7-1-1-核心模块"><a href="#7-1-1-核心模块" class="headerlink" title="7.1.1 核心模块"></a>7.1.1 核心模块</h4><ol>
+<li><strong>什么是核心模块：</strong><ul>
+<li>随着Node.js的安装包，一同安装到本地的模块，叫做核心模块；</li>
+<li>例如：<code>fs</code>，<code>path</code>等模块，都是由Node.js官方提供的核心模块；</li>
+<li>只要大家在计算机中，安装了Node这个应用程序，那么，我们的计算机中就已经安装了所有的 核心模块；</li>
+</ul>
+</li>
+<li><strong>如何使用核心模块</strong>：<code>require(&#39;核心模块标识符&#39;)</code></li>
+</ol>
+<h4 id="7-2-2-第三方模块"><a href="#7-2-2-第三方模块" class="headerlink" title="7.2.2 第三方模块"></a>7.2.2 第三方模块</h4><ol>
+<li><strong>什么是第三方模块：</strong><ul>
+<li>一些非官方提供的模块，叫做第三方模块；</li>
+<li>注意，第三方模块，并不在我们的计算机上；</li>
+<li>如果大家需要使用某些第三方模块，必须去一个叫做 <code>NPM</code> 的网站上搜索并下载才能使用；</li>
+</ul>
+</li>
+<li><strong>如何使用第三方模块：</strong><ul>
+<li>先从 npm 官网上下载指定的第三方模块</li>
+<li>使用 <code>require(&#39;第三方模块的名称标识符&#39;)</code>来导入这个模块</li>
+<li>根据 第三方模块的 官方文档，尝试使用</li>
+</ul>
+</li>
+</ol>
+<h4 id="7-2-3-用户自定义模块"><a href="#7-2-3-用户自定义模块" class="headerlink" title="7.2.3 用户自定义模块"></a>7.2.3 用户自定义模块</h4><ol>
+<li><strong>什么是用户模块：</strong><ul>
+<li>程序员在自己项目中写的 Javascript 文件，就叫做 用户自定义模块；</li>
+</ul>
+</li>
+<li><strong>如何使用用户模块：</strong><code>require(&#39;路径标识符&#39;)</code></li>
+</ol>
+<h3 id="7-2-包的定义和使用"><a href="#7-2-包的定义和使用" class="headerlink" title="7.2 包的定义和使用"></a>7.2 包的定义和使用</h3><h4 id="7-2-1-什么是包"><a href="#7-2-1-什么是包" class="headerlink" title="7.2.1 什么是包"></a>7.2.1 什么是包</h4><ol>
+<li>英文名叫做 <code>Packages</code>，包是在模块基础上更深一步的抽象；</li>
+<li>包的目的：方便分发和推广基于 CommonJS 规范实现的 应用程序 或 类库；</li>
+<li>包可以看作是 <strong>模块</strong>、<strong>代码</strong> 和 <strong>其它资源</strong> 组合起来形成的 独立作用域；</li>
+</ol>
+<h4 id="7-2-2-规范的包结构"><a href="#7-2-2-规范的包结构" class="headerlink" title="7.2.2 规范的包结构"></a>7.2.2 规范的包结构</h4><ol>
+<li><strong>包都要以一个单独的目录而存在</strong>；</li>
+<li><strong><code>package.json</code> 必须在包的顶层目录下</strong>；</li>
+<li><strong><code>package.json</code> 文件必须符合 JSON 格式，并且必须包含如下三个属性：<code>name</code>, <code>version</code>, <code>main</code></strong><ul>
+<li><strong>name</strong>:  包的名字</li>
+<li><strong>version</strong>: 包的版本号</li>
+<li><strong>main</strong>: 表示包的入口文件</li>
+</ul>
+</li>
+<li>二进制文件应该在<strong>bin目录</strong>下;</li>
+<li>javaScript代码应该在<strong>lib目录</strong>下;</li>
+<li>文档应该在<strong>doc目录</strong>下;</li>
+<li>单元测试应该在<strong>test目录</strong>下;</li>
+<li>Node.js对包要求并没有那么严格，只要顶层目录下有<code>package.json</code>，并<strong>符合基本规范</strong>即可;</li>
+</ol>
+<h4 id="7-2-3-包描述文件-package-json【了解】"><a href="#7-2-3-包描述文件-package-json【了解】" class="headerlink" title="7.2.3 包描述文件 package.json【了解】"></a>7.2.3 包描述文件 package.json【了解】</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">name：包的名称，必须是唯一</span><br><span class="line">description：包的简要说明</span><br><span class="line">version：符合语义化版本识别规范的版本字符串</span><br><span class="line">keywords：关键字数据，通常用于搜索</span><br><span class="line">maintainers：维护者数组，每个元素要包含name、email、web可选字段</span><br><span class="line">contributors：贡献者数组，格式与maintainers相同。包的坐着应该是贡献者数据的第一个元素</span><br><span class="line">bugs：提交bug的地址，可以是网址或者电子邮件地址</span><br><span class="line">licenses：许可证数组，每个元素要包含type和url字段</span><br><span class="line">repositories：仓库托管地址数组，每个元素要包含type、url和path字段</span><br><span class="line">dependencies：包的依赖，一个关联数组，由包名称和版本号组成。</span><br><span class="line">devDependencies：开发依赖项，表示一个包在开发期间用到的依赖项</span><br></pre></td></tr></table></figure>
+<h2 id="8-npm"><a href="#8-npm" class="headerlink" title="8. npm"></a>8. npm</h2><h3 id="8-1-npm-的含义"><a href="#8-1-npm-的含义" class="headerlink" title="8.1 npm 的含义"></a>8.1 npm 的含义</h3><ol>
+<li>NPM 是一个 第三方模块的托管网站，指的就是<code>https://www.npmjs.com/</code>；</li>
+<li>NPM 是Node的包管理工具（全名叫做  Node package manager），在我们安装Node时候，就已经顺便也安装了 NPM 这个管理工具；</li>
+</ol>
+<h3 id="8-2-安装和卸载全局包（i5ting-toc）"><a href="#8-2-安装和卸载全局包（i5ting-toc）" class="headerlink" title="8.2 安装和卸载全局包（i5ting_toc）"></a>8.2 安装和卸载全局包（i5ting_toc）</h3><ol>
+<li><strong>什么是全局的包：</strong>安装到计算机全局环境中的包，叫做全局包；安装的全局包可以在当前电脑的任何目录下，直接通过命令行来访问；</li>
+<li><strong>如何安装全局包：</strong>运行 <code>npm install 包名 -g</code> 即可；其中 <code>-g</code> 参数，表示 把包安装到全局目录中的意思；</li>
+<li><strong>全局包的安装目录：</strong><code>C:\Users\用户目录\AppData\Roaming\npm</code></li>
+<li><strong>什么样的包适合安装到全局：</strong>工具性质的包，适合安装到全局；</li>
+<li><strong>如何卸载全局包：</strong>要卸载某个全局的包，直接运行<code>npm uninstall 包名 -g</code>即可；其中 <code>uninstall</code> 表示卸载的意思；</li>
+</ol>
+<h3 id="8-3-安装和卸载本地包"><a href="#8-3-安装和卸载本地包" class="headerlink" title="8.3 安装和卸载本地包"></a>8.3 安装和卸载本地包</h3><ol>
+<li><strong>什么是本地的包：</strong>跟着项目安装的包，叫做本地包；本地包都会被安装到 node_modules 目录下；</li>
+<li><strong>注意：</strong>如果拿到一个空项目，<strong>必须</strong>在当前项目根目录中，先运行 <code>npm init</code>或者<code>npm init -y</code> 命令，初始化一个<code>package.json</code>的配置文件，否则包无法安装到本地项目中；</li>
+<li><strong>如何安装本地包：</strong>运行<code>npm i 包名 --save</code> 即可安装本地包；都安装到了当前项目的 <code>node_modules</code>目录下；<ul>
+<li>如果大家用的是npm 5.x的版本，可以不指定<code>--save</code>命令，如果用的是 npm 3.x 的版本，则需要手动指定 <code>--save</code>；</li>
+</ul>
+</li>
+<li><code>package-lock.json</code>文件中记录了曾经装过的包的下载地址，方便下次直接下载包，能够加快装包的速度，提升装包的体验；</li>
+<li><strong>如何卸载本地包：</strong>使用 <code>npm uninstall/remove 包名 -S/-D</code>即可卸载指定的本地包；</li>
+</ol>
+<h3 id="8-4-其它常用命令"><a href="#8-4-其它常用命令" class="headerlink" title="8.4 其它常用命令"></a>8.4 其它常用命令</h3><ol>
+<li><code>--save</code> 的缩写是 <code>-S</code></li>
+<li><code>--save-dev</code>的缩写是 <code>-D</code></li>
+<li><code>install</code> 的缩写是 <code>i</code></li>
+<li>注意：<code>dependencies</code> 节点，表示项目上线部署时候需要的依赖项；<code>devDependencies</code>节点，表示项目在开发阶段需要的依赖项，但是当项目要部署上线了，<code>devDependencies</code>节点中的包，就不再需要了！</li>
+<li>注意：当使用 <code>npm i</code>快速装包的时候，npm会检查<code>package.json</code>文件中，所有的依赖项，然后都为我们安装到项目中</li>
+<li><code>--production</code> 表示只安装 <code>dependencies</code> 节点下，记录的包，不安装<code>devDependencies</code>节点下的包；当项目要上线了，才会使用<code>--production</code>命令</li>
+</ol>
+<h3 id="8-5-解决-npm-下载慢问题"><a href="#8-5-解决-npm-下载慢问题" class="headerlink" title="8.5 解决 npm 下载慢问题"></a>8.5 解决 npm 下载慢问题</h3><ol>
+<li>默认，NPM在下载包的时候，连接的是国外的服务器，所以，有时候如果网速不是特别好，可能下载不下来包；此时，大家可以全局安装一个的工具，叫做 <code>cnpm</code></li>
+<li>如何安装<code>cnpm</code>：运行 <code>npm i cnpm -g</code> 即可；</li>
+<li>如何使用<code>cnpm</code>：在装包的时候，只需要把 <code>npm</code> 替换成 <code>cnpm</code> 即可，例如：<ul>
+<li>使用 <code>npm</code> 安装 <code>jquery</code>：运行 <code>npm i jquery -S</code></li>
+<li>使用 <code>cnpm</code> 安装 <code>jquery</code>： 运行 <code>cnpm i jquery -S</code></li>
+</ul>
+</li>
+</ol>
+<h2 id="9-使用-Node-构建-web-应用"><a href="#9-使用-Node-构建-web-应用" class="headerlink" title="9. 使用 Node 构建 web 应用"></a>9. 使用 Node 构建 web 应用</h2><ol>
+<li>PHP是后端的网站开发语言，PHP 开发出来的网站，可以通过 Apache 服务器托管运行起来；</li>
+<li>疑问：Node中，可以使用 Javascript 编写后端网站，那么，有没有类似于 Apache 这样的服务器软件，来提供对应的网站服务呢？</li>
+</ol>
+<h4 id="9-1-B-S-交互模型"><a href="#9-1-B-S-交互模型" class="headerlink" title="9.1 B/S 交互模型"></a>9.1 B/S 交互模型</h4><blockquote>
+<p>什么是B/S：特指基于 浏览器（Browser） 和 服务器（Server） 这种交互形式；</p>
+</blockquote>
+<ol>
+<li><strong>什么是服务器：</strong>在网络节点中，专门对外提供资源服务的一台电脑；</li>
+<li><strong>什么是客户端：</strong>在网络节点中，专门用来消费服务的一台电脑；</li>
+<li><strong>HTTP 协议的通信模型：</strong><code>请求 - 处理 - 响应</code>的过程；<ul>
+<li>请求：由客户端发起请求；</li>
+<li>处理：由服务器端处理请求；</li>
+<li>响应：服务器端把处理的结果，通过网络发送给客户端；</li>
+</ul>
+</li>
+<li><strong>什么是静态资源：</strong>服务器端只需要读取并直接发送给客户端、不需要进一步处理的资源，叫做静态资源；</li>
+<li><strong>什么是动态资源：</strong>服务器端没有现成的资源，需要服务器端动态生成的资源，叫做动态资源；</li>
+</ol>
+<h4 id="9-2-实现一个类似于Apache的-静态资源服务器"><a href="#9-2-实现一个类似于Apache的-静态资源服务器" class="headerlink" title="9.2 实现一个类似于Apache的 静态资源服务器"></a>9.2 实现一个类似于Apache的 静态资源服务器</h4><blockquote>
+<p>使用<code>http</code>核心模块，创建最基本的<code>web服务器</code></p>
+</blockquote>
+<ol>
+<li><p><strong>创建最基本的web服务器</strong></p>
+<ul>
+<li><strong>创建服务器：</strong>使用 <code>const server = http.createServer()</code> 创建服务器；</li>
+<li><strong>绑定监听事件：</strong>通过 <code>server.on(&#39;request&#39;, function(req, res) { 请求的处理函数 })</code> 绑定事件 并 指定 处理函数；</li>
+<li><strong>启动服务器：</strong>通过 <code>server.listen(端口, IP地址, 启动成功的回调函数)</code> 来启动服务器；</li>
+</ul>
+</li>
+<li><p><strong>防止响应内容中文乱码问题</strong></p>
+<ul>
+<li><p>通过  设置响应报文头的 <code>Content-Type</code>，来指定响应内容的编码类型，从而防止乱码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">res.writeHeader(<span class="number">200</span>, &#123; </span><br><span class="line">	<span class="string">'Content-Type'</span>: <span class="string">'text/plain; charset=utf-8'</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><strong>根据不同的URL返回不同的文本内容</strong></p>
+<ul>
+<li>使用 <code>req.url</code> 获取客户端请求的URL地址</li>
+</ul>
+</li>
+<li><p><strong>根据不同的URL返回不同的HTML页面</strong></p>
+<ul>
+<li>主要思路：使用 <code>fs 模块</code> 读取URL对应的HTML页面内容，并使用 <code>res.end()</code> 响应给客户端即可；</li>
+</ul>
+</li>
+<li><p>处理并返回css样式表</p>
+</li>
+<li><p>处理并返回Javascript文件</p>
+</li>
+<li><p>优化</p>
+</li>
+<li><p>实现类似于Apache的静态资源服务器</p>
+</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. 导入 http 核心模块</span></span><br><span class="line"><span class="keyword">const</span> http = <span class="built_in">require</span>(<span class="string">'http'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 调用 http.createServer 方法，创建一个web 服务器对象</span></span><br><span class="line"><span class="comment">// 通过 第二步 创建的 server 服务器，并不能监听任何 客户端的请求；同时 它也没有被启动</span></span><br><span class="line"><span class="keyword">const</span> server = http.createServer()</span><br><span class="line"></span><br><span class="line"><span class="comment">// 3. 为 server 服务器 绑定 监听函数，通过 on 方法，绑定 request 事件，来监听 客户端的请求</span></span><br><span class="line">server.on(<span class="string">'request'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">req, res</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 可以通过 request 事件，来监听并处理客户端的请求；</span></span><br><span class="line">  <span class="comment">// req 表示 客户端 相关的参数</span></span><br><span class="line">  <span class="comment">// res 表示 和 服务器相关的参数 和 方法</span></span><br><span class="line">  <span class="comment">// res.end('hello world.')</span></span><br><span class="line"></span><br><span class="line">  res.writeHeader(<span class="number">200</span>, &#123;</span><br><span class="line">    <span class="string">'Content-Type'</span>: <span class="string">'text/plain; charset=utf-8'</span></span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  res.end(<span class="string">'你好，世界。'</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 4. server.listen 来启动服务器</span></span><br><span class="line">server.listen(<span class="number">3000</span>, <span class="string">'127.0.0.1'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'server running at http://127.0.0.1:3000'</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h2 id="相关文章"><a href="#相关文章" class="headerlink" title="相关文章"></a>相关文章</h2><ul>
+<li><a href="https://www.cnblogs.com/chenguangliang/p/5856701.html" target="_blank" rel="noopener">js模块化编程之彻底弄懂CommonJS和AMD/CMD！</a></li>
+<li><a href="https://github.com/zimplexing/zzZ/issues/23" target="_blank" rel="noopener">把模块化彻底搞个明白（ES6模块/CommonJS/AMD/CMD）</a></li>
+<li><a href="http://wiki.commonjs.org/wiki/Modules/1.1" target="_blank" rel="noopener">wiki 对于 Modules的描述</a></li>
+<li><a href="http://wiki.commonjs.org/wiki/Packages/1.1" target="_blank" rel="noopener">wiki 对于 Packages的描述</a></li>
+<li><a href="http://blog.csdn.net/williamfan21c/article/details/54901974" target="_blank" rel="noopener">nodejs模块与包</a></li>
+<li><a href="http://www.cnblogs.com/woodyblog/p/6061671.html" target="_blank" rel="noopener">js的单线程和异步</a> </li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/node/" rel="tag"><i class="fa fa-tag"></i>node</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/04/nrm使用过程/" rel="next" title="nrm使用过程">
+                <i class="fa fa-chevron-left"></i> nrm使用过程
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/17/ES6常用语法/" rel="prev" title="ES6常用语法">
+                ES6常用语法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="萌萌">
+            
+              <p class="site-author-name" itemprop="name">萌萌</p>
+              <p class="site-description motion-element" itemprop="description">吃饭、睡觉、打豆豆</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">33</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">19</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/wangjie0108" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:2044728699@qq.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.36zhen.com/t?id=3448" title="前端书籍资料" target="_blank">前端书籍资料</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.awesomes.cn/rank?sort=hot" title="前端Top100" target="_blank">前端Top100</a>
+                  </li>
+                
+              </ul>
+
+              
+              <div class="link-of-music163player">
+                <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="280" height="86" src="//music.163.com/outchain/player?type=2&id=519254102&auto=1&height=66">
+                </iframe>
+            </div>
+            </div>       
+          
+
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Javascript-的单线程和异步"><span class="nav-number">1.</span> <span class="nav-text">1. Javascript 的单线程和异步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Node中的API为什么几乎都是异步操作"><span class="nav-number">2.</span> <span class="nav-text">2. Node中的API为什么几乎都是异步操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-模块化"><span class="nav-number">3.</span> <span class="nav-text">3. 模块化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-CommonJS-规范"><span class="nav-number">4.</span> <span class="nav-text">4. CommonJS 规范</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-模块作用域-和-全局作用域"><span class="nav-number">5.</span> <span class="nav-text">5. 模块作用域 和 全局作用域</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-使用-global-全局作用域在模块之间共享成员"><span class="nav-number">5.1.</span> <span class="nav-text">5.1 使用 global 全局作用域在模块之间共享成员</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-模块作用域"><span class="nav-number">5.2.</span> <span class="nav-text">5.2 模块作用域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-module-exports-和-exports-的关系"><span class="nav-number">5.3.</span> <span class="nav-text">5.3 module.exports 和 exports 的关系</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-浏览器端的-AMD-和-CMD-模块化规范"><span class="nav-number">6.</span> <span class="nav-text">6.浏览器端的 AMD 和 CMD 模块化规范</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-Node-js-中-模块-和-包-的概念"><span class="nav-number">7.</span> <span class="nav-text">7. Node.js 中 模块 和 包 的概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-1-模块成员的分类"><span class="nav-number">7.1.</span> <span class="nav-text">7.1 模块成员的分类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#7-1-1-核心模块"><span class="nav-number">7.1.1.</span> <span class="nav-text">7.1.1 核心模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-2-2-第三方模块"><span class="nav-number">7.1.2.</span> <span class="nav-text">7.2.2 第三方模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-2-3-用户自定义模块"><span class="nav-number">7.1.3.</span> <span class="nav-text">7.2.3 用户自定义模块</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-2-包的定义和使用"><span class="nav-number">7.2.</span> <span class="nav-text">7.2 包的定义和使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#7-2-1-什么是包"><span class="nav-number">7.2.1.</span> <span class="nav-text">7.2.1 什么是包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-2-2-规范的包结构"><span class="nav-number">7.2.2.</span> <span class="nav-text">7.2.2 规范的包结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-2-3-包描述文件-package-json【了解】"><span class="nav-number">7.2.3.</span> <span class="nav-text">7.2.3 包描述文件 package.json【了解】</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-npm"><span class="nav-number">8.</span> <span class="nav-text">8. npm</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#8-1-npm-的含义"><span class="nav-number">8.1.</span> <span class="nav-text">8.1 npm 的含义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-2-安装和卸载全局包（i5ting-toc）"><span class="nav-number">8.2.</span> <span class="nav-text">8.2 安装和卸载全局包（i5ting_toc）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-3-安装和卸载本地包"><span class="nav-number">8.3.</span> <span class="nav-text">8.3 安装和卸载本地包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-4-其它常用命令"><span class="nav-number">8.4.</span> <span class="nav-text">8.4 其它常用命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-5-解决-npm-下载慢问题"><span class="nav-number">8.5.</span> <span class="nav-text">8.5 解决 npm 下载慢问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-使用-Node-构建-web-应用"><span class="nav-number">9.</span> <span class="nav-text">9. 使用 Node 构建 web 应用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#9-1-B-S-交互模型"><span class="nav-number">9.0.1.</span> <span class="nav-text">9.1 B/S 交互模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-2-实现一个类似于Apache的-静态资源服务器"><span class="nav-number">9.0.2.</span> <span class="nav-text">9.2 实现一个类似于Apache的 静态资源服务器</span></a></li></ol></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#相关文章"><span class="nav-number">10.</span> <span class="nav-text">相关文章</span></a></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+    </div>
+  </aside>
+</div>
+
+
+        
+      </main></div>
+    
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-[object Object]"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">萌萌</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+      
+  
+  <script type="text/javascript" color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.5.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.5.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.5.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
