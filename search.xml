@@ -4,6 +4,13 @@
     <title><![CDATA[今天遇到的谷歌控制台报错]]></title>
     <url>%2F2018%2F12%2F01%2F%E4%BB%8A%E5%A4%A9%E9%81%87%E5%88%B0%E7%9A%84%E8%B0%B7%E6%AD%8C%E6%8E%A7%E5%88%B6%E5%8F%B0%E6%8A%A5%E9%94%99%2F</url>
     <content type="text"><![CDATA[日常小demo报错123456789&lt;script&gt; var busReserve = 1; var priReserve = 2; var J_reserveType = 1; if (!J_reserveType) return; if (J_reserveType) &#123; console.log('hah') &#125;&lt;/script&gt; 查看js手册发现，在js中return语句只能放在function中，如果不是在一个function中就会弹出如上错误；解决方法：只要把这个if语句放到一个函数中即可1234567891011&lt;script&gt; window.onload = function () &#123; var busReserve = 1; var priReserve = 2; var J_reserveType = 1; if (!J_reserveType) return; if (J_reserveType) &#123; console.log('hah') &#125; &#125;&lt;/script&gt;]]></content>
+      <categories>
+        <category>前端</category>
+        <category>报错</category>
+      </categories>
+      <tags>
+        <tag>报错</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[react简单认识]]></title>
@@ -126,7 +133,7 @@
   <entry>
     <title><![CDATA[ES6常用语法]]></title>
     <url>%2F2018%2F09%2F17%2FES6%E5%B8%B8%E7%94%A8%E8%AF%AD%E6%B3%95%2F</url>
-    <content type="text"><![CDATA[ECMAScript 6常用语法12345678910111. let(变量) 与 const(常量) - 存在变量提升问题，降低 js 代码的可阅读性 - 没有块级作用域，容易造成变量污染2. let 主要特性： - 不存在变量提升问题，只有定义之后才能使用此变量 - 有 &#123; &#125; 作用域3. const 主要特性： - 不存在变量提升问题，只有定义之后才能使用此变量 - const 定义的常量，无法被重新赋值 - 当定义常量的时候，必须定义且初始化，否则报语法错误 - const 定义的常量，也有 块级作用域 变量的结构赋值 定义：所谓的解构赋值，就是把 某个对象中的属性，当作变量，给解放出来，这样，今后就能够当作变量直接使用了； 可以使用 :为解构出来的变量重命名123// 变量的解构赋值const &#123; name : name123, age, gender &#125; = personconsole.log(name123) 箭头函数(常用) 语法： 定义普通的function函数 123function show() &#123; console.log('这是普通function 函数定义show的方法')&#125; 把方法定义为箭头函数（最完整的写法）（形参列表） =&gt; { 函数体代码 } 箭头函数本质上就是一个匿名函数 箭头函数的特性： 箭头函数内部的this，永远和箭头函数外部的this保持一致； 变体： 123var add = (x, y) =&gt; &#123; return x + y&#125; 变体1：如果箭头函数，左侧的形参列表中，只有一个参数，则，左侧小括号可以省略； 123var add = x =&gt; &#123; return x + y&#125; 变体2：如果右侧函数体中，只有一行代码，则，右侧的 { } 可以省略, 同时return也要去掉； 1var add = (x, y) =&gt; x + y 变体3：如果箭头函数左侧 只有一个 形参，而且右侧只有一行代码，则 两边的 () 和 {} 都可以省略 1var add = x =&gt; x + y 注意: 另外，如果省略了右侧的函数体{},那么，默认会把右侧函数体重代码的执行结果当做箭头函数的调用结果return出去；]]></content>
+    <content type="text"><![CDATA[ECMAScript 6常用语法 var定义的变量 存在变量提升问题，降低 js 代码的可阅读性 没有块级作用域，容易造成变量污染 可以跨块访问，不能跨函数访问 let 主要特性： 不存在变量提升问题，只有定义之后才能使用此变量 只能在块作用域访问，不能跨块访问，也不能跨函数访问 有 { } 作用域 const 主要特性： 不存在变量提升问题，只有定义之后才能使用此变量 const 定义的常量，无法被重新赋值 当定义常量的时候，必须定义且初始化（即必须赋值），否则报语法错误 const 定义的常量，也有 块级作用域 变量的结构赋值 定义：所谓的解构赋值，就是把 某个对象中的属性，当作变量，给解放出来，这样，今后就能够当作变量直接使用了； 可以使用 :为解构出来的变量重命名123// 变量的解构赋值const &#123; name : name123, age, gender &#125; = personconsole.log(name123) 箭头函数(常用) 语法： 定义普通的function函数 123function show() &#123; console.log('这是普通function 函数定义show的方法')&#125; 把方法定义为箭头函数（最完整的写法）（形参列表） =&gt; { 函数体代码 } 箭头函数本质上就是一个匿名函数 箭头函数的特性： 箭头函数内部的this，永远和箭头函数外部的this保持一致； 变体： 123var add = (x, y) =&gt; &#123; return x + y&#125; 变体1：如果箭头函数，左侧的形参列表中，只有一个参数，则，左侧小括号可以省略； 123var add = x =&gt; &#123; return x + y&#125; 变体2：如果右侧函数体中，只有一行代码，则，右侧的 { } 可以省略, 同时return也要去掉； 1var add = (x, y) =&gt; x + y 变体3：如果箭头函数左侧 只有一个 形参，而且右侧只有一行代码，则 两边的 () 和 {} 都可以省略 1var add = x =&gt; x + y 注意: 另外，如果省略了右侧的函数体{},那么，默认会把右侧函数体重代码的执行结果当做箭头函数的调用结果return出去；]]></content>
       <categories>
         <category>前端</category>
         <category>ES6</category>

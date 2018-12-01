@@ -108,18 +108,18 @@
 
 
 
-  <meta name="description" content="ECMAScript 6常用语法12345678910111. let(变量) 与 const(常量)    - 存在变量提升问题，降低 js 代码的可阅读性    - 没有块级作用域，容易造成变量污染2. let 主要特性：    - 不存在变量提升问题，只有定义之后才能使用此变量    - 有 &amp;#123; &amp;#125; 作用域3. const 主要特性：    - 不存在变量提升问题，只有定">
+  <meta name="description" content="ECMAScript 6常用语法 var定义的变量 存在变量提升问题，降低 js 代码的可阅读性 没有块级作用域，容易造成变量污染 可以跨块访问，不能跨函数访问   let 主要特性： 不存在变量提升问题，只有定义之后才能使用此变量 只能在块作用域访问，不能跨块访问，也不能跨函数访问 有 { } 作用域   const 主要特性： 不存在变量提升问题，只有定义之后才能使用此变量 const 定义的">
 <meta name="keywords" content="ES6">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ES6常用语法">
 <meta property="og:url" content="http://yoursite.com/2018/09/17/ES6常用语法/index.html">
 <meta property="og:site_name" content="个人小站">
-<meta property="og:description" content="ECMAScript 6常用语法12345678910111. let(变量) 与 const(常量)    - 存在变量提升问题，降低 js 代码的可阅读性    - 没有块级作用域，容易造成变量污染2. let 主要特性：    - 不存在变量提升问题，只有定义之后才能使用此变量    - 有 &amp;#123; &amp;#125; 作用域3. const 主要特性：    - 不存在变量提升问题，只有定">
+<meta property="og:description" content="ECMAScript 6常用语法 var定义的变量 存在变量提升问题，降低 js 代码的可阅读性 没有块级作用域，容易造成变量污染 可以跨块访问，不能跨函数访问   let 主要特性： 不存在变量提升问题，只有定义之后才能使用此变量 只能在块作用域访问，不能跨块访问，也不能跨函数访问 有 { } 作用域   const 主要特性： 不存在变量提升问题，只有定义之后才能使用此变量 const 定义的">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-11-09T07:07:36.281Z">
+<meta property="og:updated_time" content="2018-12-01T07:04:07.945Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ES6常用语法">
-<meta name="twitter:description" content="ECMAScript 6常用语法12345678910111. let(变量) 与 const(常量)    - 存在变量提升问题，降低 js 代码的可阅读性    - 没有块级作用域，容易造成变量污染2. let 主要特性：    - 不存在变量提升问题，只有定义之后才能使用此变量    - 有 &amp;#123; &amp;#125; 作用域3. const 主要特性：    - 不存在变量提升问题，只有定">
+<meta name="twitter:description" content="ECMAScript 6常用语法 var定义的变量 存在变量提升问题，降低 js 代码的可阅读性 没有块级作用域，容易造成变量污染 可以跨块访问，不能跨函数访问   let 主要特性： 不存在变量提升问题，只有定义之后才能使用此变量 只能在块作用域访问，不能跨块访问，也不能跨函数访问 有 { } 作用域   const 主要特性： 不存在变量提升问题，只有定义之后才能使用此变量 const 定义的">
 
 
 
@@ -441,13 +441,33 @@
       
 
       
-        <h5 id="ECMAScript-6常用语法"><a href="#ECMAScript-6常用语法" class="headerlink" title="ECMAScript 6常用语法"></a>ECMAScript 6常用语法</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1. let(变量) 与 const(常量)</span><br><span class="line">    - 存在变量提升问题，降低 js 代码的可阅读性</span><br><span class="line">    - 没有块级作用域，容易造成变量污染</span><br><span class="line">2. let 主要特性：</span><br><span class="line">    - 不存在变量提升问题，只有定义之后才能使用此变量</span><br><span class="line">    - 有 &#123; &#125; 作用域</span><br><span class="line">3. const 主要特性：</span><br><span class="line">    - 不存在变量提升问题，只有定义之后才能使用此变量</span><br><span class="line">    - const 定义的常量，无法被重新赋值</span><br><span class="line">    - 当定义常量的时候，必须定义且初始化，否则报语法错误</span><br><span class="line">    - const 定义的常量，也有 块级作用域</span><br></pre></td></tr></table></figure>
-<h5 id="变量的结构赋值"><a href="#变量的结构赋值" class="headerlink" title="变量的结构赋值"></a>变量的结构赋值</h5><ul>
+        <h1 id="ECMAScript-6常用语法"><a href="#ECMAScript-6常用语法" class="headerlink" title="ECMAScript 6常用语法"></a>ECMAScript 6常用语法</h1><ol>
+<li>var定义的变量<ul>
+<li>存在变量提升问题，降低 js 代码的可阅读性</li>
+<li>没有块级作用域，容易造成变量污染</li>
+<li>可以跨块访问，不能跨函数访问</li>
+</ul>
+</li>
+<li>let 主要特性：<ul>
+<li>不存在变量提升问题，只有定义之后才能使用此变量</li>
+<li>只能在块作用域访问，不能跨块访问，也不能跨函数访问</li>
+<li>有 { } 作用域</li>
+</ul>
+</li>
+<li>const 主要特性：<ul>
+<li>不存在变量提升问题，只有定义之后才能使用此变量</li>
+<li>const 定义的常量，无法被重新赋值</li>
+<li>当定义常量的时候，必须定义且初始化（即必须赋值），否则报语法错误</li>
+<li>const 定义的常量，也有 块级作用域</li>
+</ul>
+</li>
+</ol>
+<h1 id="变量的结构赋值"><a href="#变量的结构赋值" class="headerlink" title="变量的结构赋值"></a>变量的结构赋值</h1><ul>
 <li><strong>定义：所谓的解构赋值，就是把 某个对象中的属性，当作变量，给解放出来，这样，今后就能够当作变量直接使用了；</strong></li>
 <li>可以使用 <code>:</code>为解构出来的变量重命名<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 变量的解构赋值</span></span><br><span class="line"><span class="keyword">const</span> &#123; <span class="attr">name</span> : name123, age, gender &#125; = person</span><br><span class="line"><span class="built_in">console</span>.log(name123)</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<h5 id="箭头函数-常用"><a href="#箭头函数-常用" class="headerlink" title="箭头函数(常用)"></a>箭头函数(常用)</h5><ol>
+<h1 id="箭头函数-常用"><a href="#箭头函数-常用" class="headerlink" title="箭头函数(常用)"></a>箭头函数(常用)</h1><ol>
 <li><p>语法：</p>
 <ul>
 <li><p>定义普通的<code>function</code>函数</p>
@@ -459,23 +479,22 @@
 </li>
 <li><strong>箭头函数本质上就是一个匿名函数</strong></li>
 <li><strong>箭头函数的特性：</strong> 箭头函数内部的this，永远和箭头函数外部的this保持一致；</li>
-<li><p>变体：</p>
- <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> add = <span class="function">(<span class="params">x, y</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<li>变体： <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> add = <span class="function">(<span class="params">x, y</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
 <ul>
 <li><p>变体1：如果箭头函数，左侧的形参列表中，只有一个参数，则，左侧小括号可以省略；</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> add = <span class="function"><span class="params">x</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+  <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> add = <span class="function"><span class="params">x</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>变体2：如果右侧函数体中，只有一行代码，则，右侧的 { } 可以省略, 同时return也要去掉；</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> add = <span class="function">(<span class="params">x, y</span>) =&gt;</span> x + y</span><br></pre></td></tr></table></figure>
+  <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> add = <span class="function">(<span class="params">x, y</span>) =&gt;</span> x + y</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>变体3：如果箭头函数左侧 只有一个 形参，而且右侧只有一行代码，则 两边的 () 和 {} 都可以省略</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> add = <span class="function"><span class="params">x</span> =&gt;</span> x + y</span><br></pre></td></tr></table></figure>
+  <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> add = <span class="function"><span class="params">x</span> =&gt;</span> x + y</span><br></pre></td></tr></table></figure>
 </li>
 <li><p><strong>注意:</strong> 另外，如果省略了右侧的函数体{},那么，默认会把右侧函数体重代码的执行结果当做箭头函数的调用结果return出去；</p>
 </li>
 </ul>
-</li>
-</ol>
 
       
     </div>
@@ -640,7 +659,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">17</span>
+                      
+                    
+                    <span class="site-state-item-count">18</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -693,7 +714,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">20</span>
+                      
+                    
+                    <span class="site-state-item-count">21</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -768,7 +791,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#ECMAScript-6常用语法"><span class="nav-number">1.</span> <span class="nav-text">ECMAScript 6常用语法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#变量的结构赋值"><span class="nav-number">2.</span> <span class="nav-text">变量的结构赋值</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#箭头函数-常用"><span class="nav-number">3.</span> <span class="nav-text">箭头函数(常用)</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ECMAScript-6常用语法"><span class="nav-number">1.</span> <span class="nav-text">ECMAScript 6常用语法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#变量的结构赋值"><span class="nav-number">2.</span> <span class="nav-text">变量的结构赋值</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#箭头函数-常用"><span class="nav-number">3.</span> <span class="nav-text">箭头函数(常用)</span></a></li></ol></div>
             
 
           </div>
