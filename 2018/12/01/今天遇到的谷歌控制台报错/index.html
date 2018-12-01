@@ -117,7 +117,7 @@
 <meta property="og:description" content="日常小demo报错123456789&amp;lt;script&amp;gt;    var busReserve = 1;    var priReserve = 2;    var J_reserveType = 1;    if (!J_reserveType) return;    if (J_reserveType) &amp;#123;        console.log(&apos;hah&apos;)    &amp;#125;">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://yoursite.com/2018/12/01/今天遇到的谷歌控制台报错/img/bug.gif">
-<meta property="og:updated_time" content="2018-12-01T07:43:36.628Z">
+<meta property="og:updated_time" content="2018-12-01T14:40:37.897Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="今天遇到的谷歌控制台报错">
 <meta name="twitter:description" content="日常小demo报错123456789&amp;lt;script&amp;gt;    var busReserve = 1;    var priReserve = 2;    var J_reserveType = 1;    if (!J_reserveType) return;    if (J_reserveType) &amp;#123;        console.log(&apos;hah&apos;)    &amp;#125;">
@@ -445,7 +445,7 @@
           
           
             <div class="post-gallery-row">
-              <a class="post-gallery-img fancybox" href="/img/bug.gif" rel="gallery_cjp53z0p7001hl8sya80n77iu" itemscope="" itemtype="http://schema.org/ImageObject" itemprop="url">
+              <a class="post-gallery-img fancybox" href="/img/bug.gif" rel="gallery_cjp5kgpby002kp4sy589o9adq" itemscope="" itemtype="http://schema.org/ImageObject" itemprop="url">
                 <img src="/img/bug.gif" itemprop="contentUrl">
               </a>
             
@@ -458,7 +458,8 @@
 
       
         <h1 id="日常小demo报错"><a href="#日常小demo报错" class="headerlink" title="日常小demo报错"></a>日常小demo报错</h1><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">    <span class="keyword">var</span> busReserve = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">var</span> priReserve = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">var</span> J_reserveType = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span> (!J_reserveType) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">if</span> (J_reserveType) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'hah'</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
-<p><img src="/img/mistake.png" alt="演示1"><br>查看js手册发现，在<code>js</code>中<code>return</code>语句只能放在<code>function</code>中，如果不是在一个<code>function</code>中就会弹出如上错误；<br>解决方法：只要把这个<code>if</code>语句放到一个函数中即可<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">    <span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> busReserve = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">var</span> priReserve = <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">var</span> J_reserveType = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (!J_reserveType) <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">if</span> (J_reserveType) &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'hah'</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p><img src="/img/mistake.png" alt="演示1"></p>
+<p>查看js手册发现，在<code>js</code>中<code>return</code>语句只能放在<code>function</code>中，如果不是在一个<code>function</code>中就会弹出如上错误；<br>解决方法：只要把这个<code>if</code>语句放到一个函数中即可<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">    <span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> busReserve = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">var</span> priReserve = <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">var</span> J_reserveType = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (!J_reserveType) <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">if</span> (J_reserveType) &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'hah'</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure></p>
 <p><img src="/img/right.png" alt="演示2"></p>
 
       
@@ -502,6 +503,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/12/01/获取路径/" rel="prev" title="获取路径">
+                获取路径 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -573,7 +578,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">35</span>
+                    <span class="site-state-item-count">36</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
