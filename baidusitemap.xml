@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://yoursite.com/2018/12/01/%E4%BB%8A%E5%A4%A9%E9%81%87%E5%88%B0%E7%9A%84%E8%B0%B7%E6%AD%8C%E6%8E%A7%E5%88%B6%E5%8F%B0%E6%8A%A5%E9%94%99/</loc>
+    <lastmod>2018-12-01T06:48:51.421Z</lastmod>
+  </url>  <url>
     <loc>http://yoursite.com/2018/11/15/react%E7%AE%80%E5%8D%95%E8%AE%A4%E8%AF%86/</loc>
-    <lastmod>2018-11-20T12:37:02.017Z</lastmod>
+    <lastmod>2018-11-25T08:04:46.378Z</lastmod>
   </url>  <url>
     <loc>http://yoursite.com/2018/11/10/vue%E5%85%A8%E5%AE%B6%E6%A1%B6/</loc>
     <lastmod>2018-11-17T11:28:06.903Z</lastmod>
