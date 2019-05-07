@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[19年5月7日面试题（vue）]]></title>
+    <url>%2F2019%2F05%2F07%2F19%E5%B9%B45%E6%9C%887%E6%97%A5%E9%9D%A2%E8%AF%95%E9%A2%98%EF%BC%88vue%EF%BC%89%2F</url>
+    <content type="text"><![CDATA[vue应该是目前比较火的框架了，最近面试的面试题，总结复盘，回答错的就更新，回答对了后期继续巩固，加油鸭！O(∩_∩)O哈哈~vue响应式原理vue实例创建时，vue会遍历data选项的属性，用Object.definedProperty()将它们转化为getter/setter，并在内部追踪相关依赖，在属性被访问或修改时，通知变化；每个实例组件都用相对应的watch程序实例，之后当相关依赖项的setter被调用时会通知watcher重新计算，从而致使它关联的组件得以更新如何优化SPA应用首屏加载慢速度慢的问题 将公用的JS库通过script标签外部引入，减少app.bundle的大小，让浏览器进行下载资源文件，提高下载速度； 在配置路由时，页面和组件使用懒加载的方式引入，进一步缩小app.bundle的体积，再调用某个组件时，再加载对应的js文件 加载一个首屏loading图，提升用户体验前端如何优化网站性能 减少HTTP请求次数http通信进行通信。浏览器与服务器需要讲过三次握手，每次握手需要花费大量的时间。而且不同浏览器对资源文件并发请求数量有限（不同浏览器允许并发），一旦http请求数量达到一定数量，资源请求就存在等待状态，这是致命的，因此减少http请求数量可以很大程度上对网站性能进行优化 雪碧图 合并css和js 采用lazyLoad 控制资源文件加载优先级 浏览器在加载HTML内容时，是将HTML内容从上之下一次解析，解析到link或者script标签就会加载href或src对应链接的内容，为了第一时间暂时页面给用户，需要将css提前加载，不要受js加载影响一般情况下，都是css放在头部，js放在底部 利用浏览器缓存 减少重排（Reflow） 基本原理：重排是DOM的变化影响到了元素的几何属性（宽和高），浏览器会重新计算元素的几何属性，会是渲染树中受到影响的部分失效，浏览器会验证DOM树上所有其他特点的visibility属性，这也是导致Reflow低效的原因，如果Reflow过于频繁，CPU使用率就会急剧上升。减少Reflow的过于频繁，如果需要在DOM操作时添加样式，尽量增加class属性，而不是通过style操作样式 减少DOM操作 图标使用IconFont替换网页从输入到渲染过程完成经历了哪些过程？ 输入网址 发送DNS服务器，并获取域名对应的web服务器对应的ip地址； 与web服务器简历TCP链接 浏览器向web服务器发送http请求 web服务器响应请求，并返回指定的url数据（或错误信息，或重定向的新的url地址） 浏览器下载web服务器返回的数据及解析html源文件 生成DOM树， 解析css和js，渲染页面，直至显示完成]]></content>
+      <categories>
+        <category>前端</category>
+        <category>vue</category>
+      </categories>
+      <tags>
+        <tag>vue面试</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[获取路径]]></title>
     <url>%2F2018%2F12%2F01%2F%E8%8E%B7%E5%8F%96%E8%B7%AF%E5%BE%84%2F</url>
     <content type="text"><![CDATA[如何获取地址栏中的参数 window.location.href location.href window.location decodeURI()可以解码地址栏中的数据，恢复中文数据 window.search获得地址栏中问号及问号之后的数据–获取地址栏里的参数（URL） 字符串拆分123456789101112131415161718192021function getRequest() &#123; // url例子：www.bicycle.com?id="123456"&amp;Name="bicycle"; var url = decodeURI(location.search); // ?id="123456"&amp;Name="bicycle" var object = &#123;&#125;; if (url.indexOf('?') != -1) &#123; // URL中存在？号，也就是说有参数 var str = url.substr(1); // 得到？后面的字符串 var newStr = str.split('&amp;'); // 将得到的参数分割成数组 [id="123456", Name="bicycle"] for (var i = 0; i &lt; newStr.length; i++) &#123; // 第一种判断方式 // var current = newStr[i].split('='); // if (current[0] == name) &#123; // return current[1]; // &#125; object[newStr[i].split('=')[0]] = newStr[i].split('=').[1]; &#125; &#125; return object[value];&#125; 正则匹配12345678function GetQueryString(name) &#123; var reg = new RegExp("(^|&amp;)" + name + "=([^&amp;]*)(&amp;|$)"); var r = window.location.search.substr(1).match(reg); if (r != null) &#123; return unescape(r[2]); &#125; return null; &#125; vue 在vue中可以通过this.$route获取路由对象然后根据具体需要取对象内容 this.$route.path 当前页面路由 this.$route.params 路由参数 this.$route.query 查询路由参数 jQuery实现页面跳转12345$(function() &#123; var keywords = $('#gotoPageNum').val(); // location.href 实现客户端页面的跳转 location.href = "newList.html?keywords="+keywords;&#125;) 清空页面内容及本地存储内容123456789&lt;!-- 储存的内容 --&gt;var keyArr = [];&lt;!-- 点击删除按钮清空内容 --&gt;$('#clearBtn').on('click', function () &#123; // 清空页面内容 $('#history').html(''); // 清除本地存储 localStorage.removeItem('keyArr')&#125;)]]></content>
