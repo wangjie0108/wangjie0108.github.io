@@ -119,11 +119,11 @@
 <meta property="og:image" content="http://yoursite.com/img/devDependencies.png">
 <meta property="og:image" content="http://yoursite.com/img/devDependencies01.png">
 <meta property="og:image" content="http://yoursite.com/img/webpack.config.png">
-<meta property="og:image" content="http://yoursite.com/img/script.config.png">
+<meta property="og:image" content="http://yoursite.com/img/script-config.png">
 <meta property="og:image" content="http://yoursite.com/img/entry-output.png">
 <meta property="og:image" content="http://yoursite.com/img/loader.png">
 <meta property="og:image" content="http://yoursite.com/img/plugins.png">
-<meta property="og:updated_time" content="2019-05-08T02:22:09.854Z">
+<meta property="og:updated_time" content="2019-05-08T02:25:39.768Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="19年5月7日面试题（vue）">
 <meta name="twitter:description" content="最近面试的面试题，总结复盘，回答错的就更新，回答对了后期继续巩固，加油鸭！O(∩_∩)O哈哈~ 最近一直在面试，有很多时候会跑很远去面试，跑到地儿什么技术问题也没问，随便聊聊，然后就结束了，崩溃的就是不知道面试的啥？结束了?（黑人问号脸） 今晚是个电话面试，虽然可能得回答的不是很好，但是真的是在面试中找到自己的不足呀！(#^.^#)  谈谈对MVVM开发模式的理解 MVVM分为Model,Vie">
@@ -522,20 +522,20 @@
 </li>
 <li>安装完毕，我们需要看一下是否安装成功，打开<code>package.json</code>文件，看一下<code>devDependencies</code>下包含<code>webpack</code>、<code>webpack-dev-server</code>,恭喜，安装成功了！<br><img src="/img/devDependencies01.png" alt="演示2"></li>
 <li>归根结底，<code>webpack</code>就是一个<code>JS</code>文件，架构的好与差就体现在这个配置里，在<code>demo</code>文件夹下，创建一个<code>webpack.config.js</code>文件，初始化它的内容：<br><img src="/img/webpack.config.png" alt="演示3"><ul>
-<li>然后在<code>package.json</code>文件的<code>script</code>标签里增加一个快速启动<code>webpack-dev-server</code>服务的脚本：<br><img src="/img/script.config.png" alt="演示4"></li>
+<li>然后在<code>package.json</code>文件的<code>script</code>标签里增加一个快速启动<code>webpack-dev-server</code>服务的脚本：<br><img src="/img/script-config.png" alt="演示4"></li>
 <li>此时运行<code>npm run dev</code>就会执行<code>webpack-dev-server --open --config webpack.config.js</code>的命令</li>
 </ul>
 </li>
 <li><code>webpack</code>配置中最重要也是必选的两项是出入(<code>Entry</code>)和入口(<code>Output</code>).入口文件作用：告诉<code>webpack</code>从哪里开始寻找依赖，并且编译，出口则用来配置编译后的文件存储位置和文件名</li>
-<li>在<code>demo</code>文件夹下创建一个空的入口文件<code>main.js</code>，然后在<code>webpack.config.js</code>中进行入口和输出的配置:<br><img src="/img/entry-output.png" alt="演示4"></li>
+<li>在<code>demo</code>文件夹下创建一个空的入口文件<code>main.js</code>，然后在<code>webpack.config.js</code>中进行入口和输出的配置:<br><img src="/img/entry-output.png" alt="演示5"></li>
 <li>有了入口和出口，已经可以启动<code>webpack</code>项目了，在<code>webpack</code>世界里，每一个文件就是一个模块（<code>.css</code>,<code>.js</code>,<code>.html</code>,<code>.jpg</code>, <code>.less</code>），不同模块需要不同的加载器(<code>Loaders</code>)来处理，如<code>CSS</code>，需要<code>style-loader</code>和<code>css-loader</code>,安装：<ul>
 <li><code>npm install css-loader --save-dev</code></li>
 <li><code>npm install style-loader --save-dev</code></li>
-<li>安装完后在<code>webpack.config.js</code>中进行配置，增加对<code>.css</code>文件的处理：<br><img src="/img/loader.png" alt="演示4"></li>
+<li>安装完后在<code>webpack.config.js</code>中进行配置，增加对<code>.css</code>文件的处理：<br><img src="/img/loader.png" alt="演示6"></li>
 </ul>
 </li>
 <li><code>webpack</code>功能很强大而且可以定制，使用<code>extract-text-plugin</code>的插件来把散落的<code>css</code>文件提取出来，生成<code>main.css</code>文件。<ul>
-<li><code>npm install extract-text-plugin --save-dev</code><br><img src="/img/plugins.png" alt="演示4"></li>
+<li><code>npm install extract-text-plugin --save-dev</code><br><img src="/img/plugins.png" alt="演示7"></li>
 <li>未完待续吧…</li>
 </ul>
 </li>
