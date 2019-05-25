@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2019-05-25T14:04:24.051Z</updated>
+  <updated>2019-05-25T14:05:29.272Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -21,9 +21,9 @@
     <link href="http://yoursite.com/2019/05/25/%E5%89%8D%E7%AB%AF%E6%A8%A1%E6%8B%9F%E6%95%B0%E6%8D%AE%E7%A5%9E%E5%99%A8/"/>
     <id>http://yoursite.com/2019/05/25/前端模拟数据神器/</id>
     <published>2019-05-25T12:15:59.000Z</published>
-    <updated>2019-05-25T14:04:24.051Z</updated>
+    <updated>2019-05-25T14:05:29.272Z</updated>
     
-    <content type="html"><![CDATA[<p>你可能在家自行学习，敲<code>demo</code>正嗨的时候，突然发现模拟请求数据这一关卡了，是不是很恼火，百度搜了一波， 发现一个神器哦！<code>easy-mock</code>,当然有可能你已经知道这个神器，但是万一还有人不知道呢。。。</p><ul><li><p>一下演示具体步骤：</p><ul><li>首先，打开网址：<a href="https://www.easy-mock.com/login，点击开始，输入账号密码" target="_blank" rel="noopener">https://www.easy-mock.com/login，点击开始，输入账号密码</a>;</li><li><p><img src="/img/login.png" alt="登录页面"></p></li><li><p>进入首页之后，点击右下角的加号”+”,开始创建咯：</p></li><li><p><img src="/img/createProject.png" alt="创建">    </p></li><li><p>现在，开始填写项目信息  </p></li><li>项目名由你自己决定、基础url看你自己的需求、项目描述就是备注、然后创建，首页就会多一个你刚刚创建的项目啦</li><li><p><img src="/img/text-jiekou.png" alt="项目信息">  </p></li><li><p>点开这个项目，开始编写你需要的数据</p></li><li><img src="/img/test-next.png" alt="创建项目"> </li><li><p><img src="/img/test-second.png" alt="基本路径"> </p></li><li><p>点击”+创建接口”，会进入这个页面，开始创建你的第一个接口</p></li><li><img src="/img/test-third.png" alt="创建接口">  </li><li><p><img src="/img/test-fourth.png" alt="第四步"></p></li><li><p>进行到这里，数据应该已经编写完了，那么点击右侧的”创建”，你就进入了这个页面</p></li><li><img src="/img/test-five.png" alt="第五步"></li><li>复制接口，就可以使用接口了哟</li><li><img src="/img/test-result.png" alt="第六步"></li><li><img src="/img/test-last.png" alt="第六步"></li></ul></li></ul>]]></content>
+    <content type="html"><![CDATA[<p>你可能在家自行学习，敲<code>demo</code>正嗨的时候，突然发现模拟请求数据这一关卡了，是不是很恼火，百度搜了一波， 发现一个神器哦！<code>easy-mock</code>,当然有可能你已经知道这个神器，但是万一还有人不知道呢。。。</p><ul><li><p>以下演示具体步骤：</p><ul><li>首先，打开网址：<a href="https://www.easy-mock.com/login" target="_blank" rel="noopener">https://www.easy-mock.com/login</a> , 点击开始，输入账号密码;</li><li><p><img src="/img/login.png" alt="登录页面"></p></li><li><p>进入首页之后，点击右下角的加号”+”,开始创建咯：</p></li><li><p><img src="/img/createProject.png" alt="创建">    </p></li><li><p>现在，开始填写项目信息  </p></li><li>项目名由你自己决定、基础url看你自己的需求、项目描述就是备注、然后创建，首页就会多一个你刚刚创建的项目啦</li><li><p><img src="/img/text-jiekou.png" alt="项目信息">  </p></li><li><p>点开这个项目，开始编写你需要的数据</p></li><li><img src="/img/test-next.png" alt="创建项目"> </li><li><p><img src="/img/test-second.png" alt="基本路径"> </p></li><li><p>点击”+创建接口”，会进入这个页面，开始创建你的第一个接口</p></li><li><img src="/img/test-third.png" alt="创建接口">  </li><li><p><img src="/img/test-fourth.png" alt="第四步"></p></li><li><p>进行到这里，数据应该已经编写完了，那么点击右侧的”创建”，你就进入了这个页面</p></li><li><img src="/img/test-five.png" alt="第五步"></li><li>复制接口，就可以使用接口了哟</li><li><img src="/img/test-result.png" alt="第六步"></li><li><img src="/img/test-last.png" alt="第六步"></li></ul></li></ul>]]></content>
     
     <summary type="html">
     
